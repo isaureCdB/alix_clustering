@@ -6,7 +6,7 @@ import numpy as np
 def get_threshold(rmsd_matrix, intern_coordinate, cutoff):
     nstruc, ncoor = intern_coordinate.shape
 
-    assert rmsd_matrix.shape == (nstruc, nstruc)
+    assert rmsd_matrix.shape == (nstruc, nstruc), "The RMSD matrix has not the size of the number of structures"
 
     intcoor_diff = np.zeros((nstruc, nstruc, ncoor))
 
@@ -21,7 +21,6 @@ def get_threshold(rmsd_matrix, intern_coordinate, cutoff):
 
     thresholds = np.max(intcoor_diff_inf, axis=0)
     return thresholds
-
 
 def main():
     rmsd = np.load(sys.argv[1]) #rmsdAAA_test.npy
