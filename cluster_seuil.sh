@@ -19,3 +19,4 @@ filter_intcoor.py AAAr.npy AAA_trigo.npy threshold_AAA_test_1A.npy AAA_trigo_mas
 # get boolean mask of which pair has real RMSD < 1A
 filter_RMSD.py AAAr.npy AAA_trigo_mask.npy 1 AAA_RMSD_mask.npy
 
+#cluster with full boolean RMSD matrix
