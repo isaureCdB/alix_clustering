@@ -3,7 +3,7 @@
 ############################################
 # AAA_test_trigo.npy = internal coordinates for subset of AAA fragments
 # AAA_trigo.npy = internal coordinates for all AAA fragments
-# rmsd_AAAr_test.npy = exact pairwise RMSD of subset of AAA fragments
+# rmsd_AAAr_test.npy = exact pairwise RMSDs of subset of AAA fragments
 
 
 # get thresholds of delta in internal coordinate above which a pair has RMSD > 1A.
@@ -19,3 +19,5 @@ filter_intcoor.py AAAr.npy AAA_trigo.npy threshold_AAA_test_1A.npy AAA_trigo_mas
 # get boolean mask of which pair has real RMSD < 1A
 filter_RMSD.py AAAr.npy AAA_trigo_mask.npy 1 AAA_RMSD_mask.npy
 
+#cluster with full boolean RMSD matrix
+cluster_fullmatrix.py AAA_RMSD_mask.npy AAA.clust > AAA.centers
