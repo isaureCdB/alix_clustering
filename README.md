@@ -12,14 +12,12 @@ ATTENTION : L'exécution de ce script est longue. Par exemple, sur 4771 conforma
 ==========================================================================================
 
 distribCI : Distribution des coordonnées internes
-Enregistre les graphiques des distribution des coordonnées internes des conformations d'un trinucléotide donné
-
+Calcule les coordonnées internes des conformations, enregistre les graphiques de leur distribution
 
 Utilisation : 
 python distribCI.py XXXr.npy 
 
 XXr.npy est le fichier des conformations pseudo-atomes du trinucléotide XXX de votre choix. Le fichier XXXr.npy doit se trouver dans le même dossier que le script. 
-
 
 ==========================================================================================
 
@@ -31,7 +29,6 @@ Utilisation :
 python repCI.py XXXr.npy
 
 XXXr.npy est le fichier des conformations pseudo-atome du trinucléotide XXX de votre choix. Le fichier XXXr.npy doit se trouver dans le même dossier que le script. L'array numpy créé est enregistré dans le même dossier sous le nom 'XXX_trigo.npy'
-
 
 ==========================================================================================
 
