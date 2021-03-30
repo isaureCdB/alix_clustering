@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import numpy as np
+import sys
 
 coor = np.load(sys.argv[1])
 mask1 = np.load(sys.argv[2])
@@ -64,7 +65,7 @@ def fit_multi_npy(a, ref):
     translated = fitted - translation[:,None,:]
     return translated, RMSD
 
-n = coor.shape()[0]
+n = coor.shape[0]
 
 for i in range(n):
     ref = coor[i]
