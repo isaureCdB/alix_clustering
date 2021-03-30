@@ -16,4 +16,5 @@ get_thresholds.py rmsd_AAAr_test.npy AAA_test_trigo.npy 1 threshold_AAA_test_1A.
 # Use on the full set of fragments.
 filter_intcoor.py AAAr.npy AAA_trigo.npy threshold_AAA_test_1A.npy AAA_trigo_mask.npy
 
-
+# filter by pairwise RMSDs the compatible fragments
+filter_RMSD.py AAAr.npy AAA_trigo_mask.npy 1 AAA_RMSD_mask.npy
