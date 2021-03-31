@@ -19,12 +19,15 @@ def get_threshold(mask_rmsd, intern_coordinate, ndist, cutoff, percent):
  
     intcoor_diff_inf = intcoor_diff[mask_rmsd]
     
-    thresh = []
-    p = int(percent*len(intcoor_diff_inf))
-    for c in range(ncoor):
-        order_diff = np.sort(intcoor_diff_inf[:,c])
-        thresh.append(order_diff[p])
-    
+    if percent == 1:
+        thresh = np.max(intcoor_diff_inf, axis=0)   
+    else:
+        thresh = []
+        p = int(percent*len(intcoor_diff_inf)) - 1
+        for c in range(ncoor):
+            order_diff = np.sort(intcoor_diff_inf[:,c])
+            thresh.append(order_diff[p])
+        
     return thresh
 
 
