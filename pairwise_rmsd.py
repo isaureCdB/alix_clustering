@@ -68,6 +68,7 @@ ncoor = coor.shape[0]
 pairwise_rmsd = np.zeros((ncoor, ncoor), dtype=bool)
 
 for i in range(ncoor):
+    print(i)
     ref = coor[i]
     tofit = coor[i:]
     fitted, rmsd = fit_multi_npy(tofit, ref)
