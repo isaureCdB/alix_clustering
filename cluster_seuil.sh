@@ -1,31 +1,35 @@
-
-get_internal_coordinate.py AAAr.npy AAA_test_dist.npy 1 7 14 21 16 
+ndist=4         # number of ditances in the internal coordinates
+percent=0.999   # percent accepted false negative
+cutoff=1        # RMSD cutoff in A
+coor=AAA-dr0.2r.npy
+nsample=4771
 
 ############################################
-# inputs
-############################################
-# AAA_test_trigo.npy = internal coordinates for subset of AAA fragments
-# AAA_trigo.npy = internal coordinates for all AAA fragments
-# rmsd_AAAr_test.npy = exact pairwise RMSDs of subset of AAA fragments
-
+# get threshold on a sample of conformers
 ############################################
 # get thresholds of delta in internal coordinate above which a pair has RMSD > 1A.
 # output is a vector of length = number of internal coordinates.
 # !!!! Use on a subset of fragments (< 10.000) !!! 
-#
-# usage: get_thresholds.py rmsd internal_coor Ndistances RMSD_cutoff percent_to_keep outp
-get_thresholds.py rmsd_AAAr_test.npy AAA_4dist6angle.npy 4 1 0.999 threshold_AAA.npy
+sample.py $coor $nsample sample.npy
+pairwise_rmsd.py sample.npy mask_rmsd_sample.npy
 
+get_internal_coordinate.py sample.npy intcoor_sample.npy 7 7 7 
+get_thresholds.py mask_rmsd_sample.npy intcoor_sample.npy $ndist $cutoff $percent > thresholds.txt
+
+############################################
+# apply on full set of conformers
 ############################################
 # get boolean mask of which pair has all delta values below thresholds.
 # Use on the full set of fragments.
-filter_intcoor.py coor_AAA_trigo.npy threshold_AAA.npy mask_AAA.npy
+
+get_internal_coordinate.py $coor intcoor.npy 7 7 7 
+filter_intcoor.py intcoor.npy thresholds.txt $ndist mask_intcoor.npy
 
 ############################################
 # filter by pairwise RMSDs the compatible fragments.
 # get boolean mask of which pair has real RMSD < 1A
-filter_RMSD.py AAAr.npy mask_AAA.npy 1 mask_AAA_rmsd.npy
+filter_RMSD.py $coor mask_intcoor.npy $cutoff mask_rmsd.npy
 
 ############################################
 #cluster with full boolean RMSD matrix
-cluster_fullmatrix.py mask_AAA_rmsd.npy AAA.clust > AAA.centers
+cluster_fullmatrix.py mask_rmsd.npy clusters > centers

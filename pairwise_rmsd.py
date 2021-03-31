@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 
 import numpy as np
-import sys
+import sys, random
 
-coor = np.load(sys.argv[1])
-keep_list = np.load(sys.argv[2])
-cutoff = float(sys.argv[3])
 
 def multifit(array_atoms1, atoms2):
   """
@@ -65,16 +62,15 @@ def fit_multi_npy(a, ref):
     translated = fitted - translation[:,None,:]
     return translated, RMSD
 
-n = coor.shape[0]
-new_keep = []
+coor = np.load(sys.argv[1])
+ncoor = coor.shape[0]
 
-for i in range(n):
+pairwise_rmsd = np.zeros((ncoor, ncoor), dtype=bool)
+
+for i in range(ncoor):
     ref = coor[i]
-    keep = keep_list[ keep_list[:,0] == i][:,1]
-    tofit = coor[keep]
+    tofit = coor[i:]
     fitted, rmsd = fit_multi_npy(tofit, ref)
-    new = [[i, j] for j in keep[rmsd < cutoff]]
-    new_keep.extend(new)
+    pairwise_rmsd[i,i:] = rmsd < 1
 
-new_keep_list = np.array(new_keep)
-np.save(sys.argv[4], new_keep_list)
+np.save(sys.argv[2], pairwise_rmsd)

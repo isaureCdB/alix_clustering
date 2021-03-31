@@ -16,7 +16,7 @@ def write_clustfile(clust, clustfile):
 #tests:
 #comp = np.array( [[1,0,0,0,0],[0,1,1,0,0],[0,1,1,1,0],[0,0,1,1,0],[0,0,0,0,1] ] , dtype=bool)
 
-comp = sys.argv[1] # boolean of compatible fragments
+comp = sys.argv[1] # list of compatible fragments
 output_clust = sys.argv[2]
 
 clusters = []
