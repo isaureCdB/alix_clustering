@@ -1,5 +1,5 @@
 ndist=4         # number of ditances in the internal coordinates
-percent=0.999   # percent accepted false negative
+percent=0.9999   # percent accepted false negative
 cutoff=1        # RMSD cutoff in A
 coor=AAA-dr0.2r.npy
 nsample=4771
@@ -23,13 +23,13 @@ get_thresholds.py mask_rmsd_sample.npy intcoor_sample.npy $ndist $cutoff $percen
 # Use on the full set of fragments.
 
 get_internal_coordinate.py $coor intcoor.npy 7 7 7 
-filter_intcoor.py intcoor.npy thresholds-${cutoff}A-$percent.txt $ndist mask_intcoor.npy
+filter_intcoor.py intcoor.npy thresholds-${cutoff}A-$percent.txt $ndist mask_intcoor-${cutoff}A-$percent.npy
 
 ############################################
 # filter by pairwise RMSDs the compatible fragments.
 # get boolean mask of which pair has real RMSD < 1A
-filter_RMSD.py $coor mask_intcoor.npy $cutoff mask_rmsd.npy
+filter_RMSD.py $coor mask_intcoor-${cutoff}A-$percent.npy $cutoff mask_rmsd-${cutoff}A-$percent.npy
 
 ############################################
 #cluster with full boolean RMSD matrix
-cluster_fullmatrix.py mask_rmsd.npy clusters > centers
+cluster_fullmatrix.py mask_rmsd-${cutoff}A-$percent.npy clusters-${cutoff}A-$percent > centers-${cutoff}A-$percent

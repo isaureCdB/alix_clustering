@@ -3,7 +3,7 @@
 import numpy as np
 import sys
 
-def filter_intcoor(intcoor, thresholds, ndist):
+def filter_intcoor_sum(intcoor, thresholds, ndist):
     # The ndist first coor are delta of distances,
     # next coor are delta of angles
 
@@ -12,11 +12,11 @@ def filter_intcoor(intcoor, thresholds, ndist):
     keep = np.ones((nstruc, nstruc), dtype=bool)
     np.fill_diagonal(keep, 0)
 
+    intcoor_diff = np.zeros(nstruc, nstruc)
     for m in range(ndist):
         print("coor %i"%(m+1))
         delta = np.abs(intcoor[:,None, m]-intcoor[None, :, m])
         d = delta < thresholds[m]
-        delta = []
         keep = keep & d
         d = []
 
