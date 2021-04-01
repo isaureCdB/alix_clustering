@@ -16,18 +16,20 @@ def filter_intcoor_sum(intcoor, thresholds, ndist):
     for m in range(ndist):
         print("coor %i"%(m+1))
         delta = np.abs(intcoor[:,None, m]-intcoor[None, :, m])
-        d = delta < thresholds[m]
-        keep = keep & d
-        d = []
+        intcoor_diff = np.sum(intcoor_diff, delta)
+        delta = []
+    keep = keep & (intcoor_diff < thresholds[0]))
 
+    intcoor_diff = np.zeros(nstruc, nstruc)
     for m in range(ndist,ncoor):
         print("coor %i"%(m+1))
         dd = np.abs(intcoor[:,None, m]-intcoor[None, :, m])
-        d = np.minimum(dd, 360-dd)  < thresholds[m]
+        delta = np.minimum(dd, 360-dd)
         dd = []
-        keep = keep & d
-        d = []
-
+        intcoor_diff = np.sum(intcoor_diff, delta)
+        delta = []
+    keep = keep & (intcoor_diff < thresholds[1]))
+    
     print("all coor done")
     # max number of expected pairs with rmsd potentially bellow cutoff
     # maxpair = 0.001 * ncoor * ncoor

@@ -14,9 +14,7 @@ def filter_intcoor(intcoor, thresholds, ndist):
 
     for m in range(ndist):
         print("coor %i"%(m+1))
-        delta = np.abs(intcoor[:,None, m]-intcoor[None, :, m])
-        d = delta < thresholds[m]
-        delta = []
+        d = np.abs(intcoor[:,None, m]-intcoor[None, :, m]) < thresholds[m]
         keep = keep & d
         d = []
 
