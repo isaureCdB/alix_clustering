@@ -68,7 +68,6 @@ intcoor[:,1] = distance(coor, gx2, gx3)
 intcoor[:,2] = distance(coor, gx1, gx3)
 intcoor[:,3] = distance(coor, gs21, gx3)
 intcoor[:,4] = distance(coor, gx1, gs23)
-
 #dist ph1-sug3
 intcoor[:,5] = distance(coor, gx1, gs13)
 #bb angles

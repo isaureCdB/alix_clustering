@@ -69,6 +69,7 @@ n = coor.shape[0]
 new_keep = []
 
 for i in range(n):
+    print(i)
     ref = coor[i]
     keep = keep_list[ keep_list[:,0] == i][:,1]
     tofit = coor[keep]

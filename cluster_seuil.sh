@@ -10,12 +10,13 @@ nsample=3943
 # get thresholds of delta in internal coordinate above which a pair has RMSD > 1A.
 # output is a vector of length = number of internal coordinates.
 # !!!! Use on a subset of fragments (< 10.000) !!! 
-sample.py $coor $nsample sample.npy
+sample.py $coor $nsample sample.npy > sample.list
 pairwise_rmsd.py sample.npy mask_rmsd_sample.npy
 
 get_internal_coordinate.py sample.npy intcoor_sample.npy 7 7 7 
 
 get_thresholds.py mask_rmsd_sample.npy intcoor_sample.npy $ndist $cutoff $percent > thresholds-${cutoff}A-$percent.txt
+filter_intcoor.py intcoor_sample.npy thresholds-${cutoff}A-$percent.txt $ndist mask_intcoor-${cutoff}A-$percent.npy
 
 ############################################
 # apply on full set of conformers
@@ -26,6 +27,7 @@ get_thresholds.py mask_rmsd_sample.npy intcoor_sample.npy $ndist $cutoff $percen
 get_internal_coordinate.py $coor intcoor.npy 7 7 7 
 
 filter_intcoor.py intcoor.npy thresholds-${cutoff}A-$percent.txt $ndist mask_intcoor-${cutoff}A-$percent.npy
+filter_intcoor.py intcoor_sample.npy ../thresholds-${cutoff}A-$percent-aver.txt $ndist mask_intcoor-${cutoff}A-$percent-aver.npy
 
 ############################################
 # filter by pairwise RMSDs the compatible fragments.

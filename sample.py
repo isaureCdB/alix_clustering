@@ -10,4 +10,7 @@ ncoor = coor.shape[0]
 x = random.sample(range(ncoor), k)
 sample = coor[x]
 
+for i in x:
+    print(i)
+
 np.save(sys.argv[3], sample)
