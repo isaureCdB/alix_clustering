@@ -1,8 +1,8 @@
-ndist=4         # number of ditances in the internal coordinates
-percent=0.9999   # percent accepted false negative
+ndist=6         # number of ditances in the internal coordinates
+percent=0.99   # percent accepted false negative
 cutoff=1        # RMSD cutoff in A
 coor=AAA-dr0.2r.npy
-nsample=4771
+nsample=3943
 
 ############################################
 # get threshold on a sample of conformers
@@ -14,6 +14,7 @@ sample.py $coor $nsample sample.npy
 pairwise_rmsd.py sample.npy mask_rmsd_sample.npy
 
 get_internal_coordinate.py sample.npy intcoor_sample.npy 7 7 7 
+
 get_thresholds.py mask_rmsd_sample.npy intcoor_sample.npy $ndist $cutoff $percent > thresholds-${cutoff}A-$percent.txt
 
 ############################################
@@ -23,6 +24,7 @@ get_thresholds.py mask_rmsd_sample.npy intcoor_sample.npy $ndist $cutoff $percen
 # Use on the full set of fragments.
 
 get_internal_coordinate.py $coor intcoor.npy 7 7 7 
+
 filter_intcoor.py intcoor.npy thresholds-${cutoff}A-$percent.txt $ndist mask_intcoor-${cutoff}A-$percent.npy
 
 ############################################

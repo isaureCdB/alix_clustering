@@ -41,7 +41,7 @@ nbeads = [int(i) for i in sys.argv[3:] ]
 
 nstruc = coor.shape[0]
 
-intcoor = np.zeros((nstruc, 13))
+intcoor = np.zeros((nstruc, 15))
 
 gp1 = 0
 gp2 = gp1 + nbeads[0]
@@ -66,19 +66,22 @@ gx3 = gx2 + nbeads[1]
 intcoor[:,0] = distance(coor, gx1, gx2)
 intcoor[:,1] = distance(coor, gx2, gx3)
 intcoor[:,2] = distance(coor, gx1, gx3)
+intcoor[:,3] = distance(coor, gs21, gx3)
+intcoor[:,4] = distance(coor, gx1, gs23)
+
 #dist ph1-sug3
-intcoor[:,3] = distance(coor, gx1, gs13)
+intcoor[:,5] = distance(coor, gx1, gs13)
 #bb angles
-intcoor[:,4] = dihedral(coor, gp1, gs11, gp2, gs12)
-intcoor[:,5] = dihedral(coor, gs11, gp2, gs12, gp3)
-intcoor[:,6] = dihedral(coor, gp2, gs12, gp3, gs13)
+intcoor[:,6] = dihedral(coor, gp1, gs11, gp2, gs12)
+intcoor[:,7] = dihedral(coor, gs11, gp2, gs12, gp3)
+intcoor[:,8] = dihedral(coor, gp2, gs12, gp3, gs13)
 #mu angles (base-base)
-intcoor[:,7] = dihedral(coor, gx11, gs21, gs22, gx12)
-intcoor[:,8] = dihedral(coor, gx12, gs22, gs23, gx13)
-intcoor[:,9] = dihedral(coor, gx11, gs21, gs23, gx13)
+intcoor[:,9] = dihedral(coor, gx11, gs21, gs22, gx12)
+intcoor[:,10] = dihedral(coor, gx12, gs22, gs23, gx13)
+intcoor[:,11] = dihedral(coor, gx11, gs21, gs23, gx13)
 #chi angles
-intcoor[:,10] = dihedral(coor, gs11, gs21, gx11, gx21)
-intcoor[:,11] = dihedral(coor, gs12, gs22, gx12, gx22)
-intcoor[:,12] = dihedral(coor, gs13, gs23, gx13, gx23)
+intcoor[:,12] = dihedral(coor, gs11, gs21, gx11, gx21)
+intcoor[:,13] = dihedral(coor, gs12, gs22, gx12, gx22)
+intcoor[:,14] = dihedral(coor, gs13, gs23, gx13, gx23)
 
 np.save(sys.argv[2], intcoor)

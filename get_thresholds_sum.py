@@ -11,11 +11,12 @@ def get_threshold_sum(mask_rmsd, intern_coordinate, ndist, cutoff, percent):
     intcoor_diff = np.zeros((nstruc, nstruc, 2))
 
     for m in range(ndist):
-        intcoor_diff[:,:,0] = np.sum(diff_dist, np.abs(intern_coordinate[:,None, m]-intern_coordinate[None, :, m]) )
+        delta = np.abs(intern_coordinate[:,None, m]-intern_coordinate[None, :, m])
+        intcoor_diff[:,:,0] = np.add(intcoor_diff[:,:,0], delta)
     
     for m in range(ndist,ncoor):
-        dd = np.abs(intern_coordinate[:,None, m]-intern_coordinate[None, :, m])
-        intcoor_diff[:,:,1] = np.sum(ang_diff, np.minimum(dd, 360-dd))
+        delta = np.abs(intern_coordinate[:,None, m]-intern_coordinate[None, :, m])
+        intcoor_diff[:,:,1] = np.add(intcoor_diff[:,:,1], np.minimum(delta, 360-delta))
 
     intcoor_diff_inf = intcoor_diff[mask_rmsd]
     
@@ -24,7 +25,7 @@ def get_threshold_sum(mask_rmsd, intern_coordinate, ndist, cutoff, percent):
     else:
         thresh = []
         p = int(percent*len(intcoor_diff_inf)) - 1
-        for c in range(ncoor):
+        for c in range(2):
             order_diff = np.sort(intcoor_diff_inf[:,c])
             thresh.append(order_diff[p])
         

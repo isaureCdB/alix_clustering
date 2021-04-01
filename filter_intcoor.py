@@ -12,19 +12,35 @@ def filter_intcoor(intcoor, thresholds, ndist):
     keep = np.ones((nstruc, nstruc), dtype=bool)
     np.fill_diagonal(keep, 0)
 
+    dist_sum = np.zeros((nstruc,nstruc))
     for m in range(ndist):
         print("coor %i"%(m+1))
-        d = np.abs(intcoor[:,None, m]-intcoor[None, :, m]) < thresholds[m]
+        diff = np.abs(intcoor[:,None, m]-intcoor[None, :, m])
+        dist_sum += diff
+        d = diff < thresholds[m]
+        diff = [] # to free memory
         keep = keep & d
         d = []
-
+    
+    ang_sum = np.zeros((nstruc,nstruc))
     for m in range(ndist,ncoor):
         print("coor %i"%(m+1))
-        dd = np.abs(intcoor[:,None, m]-intcoor[None, :, m])
-        d = np.minimum(dd, 360-dd)  < thresholds[m]
-        dd = []
+        x = np.abs(intcoor[:,None, m]-intcoor[None, :, m])
+        diff = np.minimum(x, 360-x)
+        x = []
+        ang_sum += diff
+        d = diff  < thresholds[m]
+        diff = []
         keep = keep & d
         d = []
+    
+    d = dist_sum < thresholds[-2]
+    keep = keep & d
+    d=[]
+   
+    d = ang_sum < thresholds[-1]
+    keep = keep & d
+    d=[]
 
     print("all coor done")
     # max number of expected pairs with rmsd potentially bellow cutoff
@@ -37,6 +53,7 @@ def filter_intcoor(intcoor, thresholds, ndist):
     keep = keep_ind[keep_ind[:,0]<keep_ind[:,1]]
     keep_list = np.array(keep, dtype=np.uint16)
     keep_ind = []
+    print(len(keep_list), file=sys.stderr)
     return keep_list
 
 def main():

@@ -12,23 +12,23 @@ def filter_intcoor_sum(intcoor, thresholds, ndist):
     keep = np.ones((nstruc, nstruc), dtype=bool)
     np.fill_diagonal(keep, 0)
 
-    intcoor_diff = np.zeros(nstruc, nstruc)
+    intcoor_diff = np.zeros((nstruc, nstruc))
     for m in range(ndist):
         print("coor %i"%(m+1))
         delta = np.abs(intcoor[:,None, m]-intcoor[None, :, m])
-        intcoor_diff = np.sum(intcoor_diff, delta)
+        intcoor_diff = np.add(intcoor_diff, delta)
         delta = []
-    keep = keep & (intcoor_diff < thresholds[0]))
+    keep = keep & (intcoor_diff < thresholds[0])
 
-    intcoor_diff = np.zeros(nstruc, nstruc)
+    intcoor_diff = np.zeros((nstruc, nstruc))
     for m in range(ndist,ncoor):
         print("coor %i"%(m+1))
         dd = np.abs(intcoor[:,None, m]-intcoor[None, :, m])
         delta = np.minimum(dd, 360-dd)
         dd = []
-        intcoor_diff = np.sum(intcoor_diff, delta)
+        intcoor_diff = np.add(intcoor_diff, delta)
         delta = []
-    keep = keep & (intcoor_diff < thresholds[1]))
+    keep = keep & (intcoor_diff < thresholds[1])
     
     print("all coor done")
     # max number of expected pairs with rmsd potentially bellow cutoff
@@ -48,7 +48,7 @@ def main():
     thresholds = [float(l.strip()) for l in open(sys.argv[2]).readlines()]
     ndist = int(sys.argv[3])
 
-    keep_list = filter_intcoor(intcoor, thresholds,ndist)
+    keep_list = filter_intcoor_sum(intcoor, thresholds,ndist)
     np.save(sys.argv[4], keep_list)
 
 if __name__ == "__main__":
