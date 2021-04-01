@@ -77,5 +77,5 @@ for i in range(n):
     new = [[i, j] for j in keep[rmsd < cutoff]]
     new_keep.extend(new)
 
-new_keep_list = np.array(new_keep)
+new_keep_list = np.array(new_keep, dtype=np.uint16)
 np.save(sys.argv[4], new_keep_list)

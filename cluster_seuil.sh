@@ -1,5 +1,5 @@
 ndist=6         # number of ditances in the internal coordinates
-percent=0.99   # percent accepted false negative
+percent=0.999   # percent accepted false negative
 cutoff=1        # RMSD cutoff in A
 coor=AAA-dr0.2r.npy
 nsample=3943
@@ -16,8 +16,12 @@ pairwise_rmsd.py sample.npy mask_rmsd_sample.npy
 get_internal_coordinate.py sample.npy intcoor_sample.npy 7 7 7 
 
 get_thresholds.py mask_rmsd_sample.npy intcoor_sample.npy $ndist $cutoff $percent > thresholds-${cutoff}A-$percent.txt
-filter_intcoor.py intcoor_sample.npy thresholds-${cutoff}A-$percent.txt $ndist mask_intcoor-${cutoff}A-$percent.npy
 
+#average thresholds over several samples
+#test on each sample:
+filter_intcoor.py intcoor_sample.npy thresholds-${cutoff}A-$percent-aver.txt $ndist mask_intcoor-${cutoff}A-$percent-aver.npy
+filter_RMSD.py sample.npy mask_intcoor-${cutoff}A-$percent-aver.npy $cutoff mask_rmsd-${cutoff}A-$percent-aver.npy
+cluster_fullmatrix.py mask_rmsd-${cutoff}A-$percent-aver.npy clusters-${cutoff}A-$percent-aver > centers-${cutoff}A-$percent-aver
 ############################################
 # apply on full set of conformers
 ############################################
