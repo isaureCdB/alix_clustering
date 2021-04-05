@@ -12,13 +12,11 @@ def write_clustfile(clust, clustfile):
         print(cc, end = " ",file=cf)
     print("", file=cf)
 
-def get_max(comp):
-    a = np.uniq(comp[:,0])
-
 #tests:
 #comp = np.array( [[1,0,0,0,0],[0,1,1,0,0],[0,1,1,1,0],[0,0,1,1,0],[0,0,0,0,1] ] , dtype=bool)
 
 comp = np.load(sys.argv[1]) # symetric mask of compatible pairs
+np.fill_diagonal(comp, 1)
 output_clust = sys.argv[2]
 
 clusters = []
@@ -30,13 +28,10 @@ left = set(range(n))
 #inv_comp = np.flip(comp, axis=1)
 #comp = np.append(comp,inv_comp), axis=0
 n_max = n
-while n_max > 0:
+while n_max > 1:
     N_comp = comp.sum(axis=0)
     print(N_comp)
     n_max = np.max(N_comp)
-    if n_max == 0:
-        print("Converged after "+str(steps)+" steps", file=sys.stderr)
-        break
     #select one of the fragments with the max number of neighbors
     x_max = np.where(N_comp == n_max)[0]
     i_rand = randrange(len(x_max))
