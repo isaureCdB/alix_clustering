@@ -1,28 +1,18 @@
+#!/usr/bin/env python3
 
-In [40]: a=np.array(a)                                                                                      
+import sys
+import numpy as np
 
-In [41]: a                                                                                                  
-Out[41]: 
-array([[0, 2],
-       [0, 3],
-       [2, 3]])
+a = np.load(sys.argv[1])
+a = np.array(a)                                                                                      
 
-In [42]: b                                                                                                  
-Out[42]: 
-array([[False, False, False, False],
-       [False, False, False, False],
-       [False, False, False, False],
-       [False, False, False, False]])
+n = int(sys.argv[2])
+#m = int(sys.argv[3])
 
-In [43]: c0=a[:,0]                                                                                          
+b = np.zeros((n,n), dtype=bool)
 
-In [44]: c1=a[:,1]                                                                                          
-
-In [45]: b[c0,c1] = 1                                                                                       
-
-In [46]: b                                                                                                  
-Out[46]: 
-array([[False, False,  True,  True],
-       [False, False, False, False],
-       [False, False, False,  True],
-       [False, False, False, False]])
+c0=a[:,0]                                                                                          
+c1=a[:,1]                                                                                          
+b[c0,c1] = 1                                                                                       
+b[c1,c0] = 1     
+np.save(sys.argv[3], b)
