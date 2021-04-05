@@ -2,6 +2,7 @@
 
 import sys
 import numpy as np
+from random import randrange
 
 def write_clustfile(clust, clustfile):
   cf = open(clustfile, "w")
@@ -28,15 +29,21 @@ left = set(range(n))
 
 #inv_comp = np.flip(comp, axis=1)
 #comp = np.append(comp,inv_comp), axis=0
-
-for steps in range(n*n):
+n_max = n
+while n_max > 0:
     N_comp = comp.sum(axis=0)
     print(N_comp)
     n_max = np.max(N_comp)
     if n_max == 0:
         print("Converged after "+str(steps)+" steps", file=sys.stderr)
         break
-    i_max = np.where(N_comp == n_max)[0][0]
+    #select one of the fragments with the max number of neighbors
+    x_max = np.where(N_comp == n_max)[0]
+    i_rand = randrange(len(x_max))
+    i_max = x_max[i_rand]
+    if len(x_max > 1):
+        print("%i frag with max neighbors", file=sys.stderr)
+    #
     clust = np.where(comp[i_max])[0]
     centers.append(i_max)
     clusters.append(clust)
