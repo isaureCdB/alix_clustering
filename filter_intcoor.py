@@ -8,6 +8,7 @@ def filter_intcoor(intcoor, thresholds, ndist):
     # next coor are delta of angles
 
     nstruc, ncoor = intcoor.shape
+    assert nstruc < 2**16
     assert len(thresholds) == ncoor + 2
 
     keep = np.ones((nstruc, nstruc), dtype=bool)
@@ -46,18 +47,16 @@ def filter_intcoor(intcoor, thresholds, ndist):
     d=None
     ang_sum = None
 
-    print( (keep.sum()) / (len(intcoor)**2-len(intcoor)) )
-
+    print( 2*(keep.sum()) / (len(intcoor)**2-len(intcoor)) )
     print("all coor done")
-    # max number of expected pairs with rmsd potentially bellow cutoff
-    # maxpair = 0.001 * ncoor * ncoor
-    
+
+    keep_ind = np.argwhere(keep)
+    keep = None
     # uint16_t = Unsigned integer (0 to 65535)
     # max number of conformers is 65535
-    # if neeeded, change to uint32_t
-    keep_ind = np.argwhere(keep)
+    # if neeeded, change to uint32
     keep_list = np.array(keep_ind, dtype=np.uint16)
-    keep_ind = []
+    keep_ind = None
     return keep_list
 
 def main():
@@ -66,25 +65,7 @@ def main():
     ndist = int(sys.argv[3])
 
     keep_list = filter_intcoor(intcoor, thresholds,ndist)
-    #np.save(sys.argv[4], keep_list)
-    print(len(keep_list)/ (len(intcoor)**2-len(intcoor)))
-
-if __name__ == "__main__":
-    main()
-    #keep = keep_ind[keep_ind[:,0]<keep_ind[:,1]]
-    keep_list = np.array(keep_ind, dtype=np.uint16)
-    keep_ind = []
-    #print(len(keep_list), file=sys.stderr)
-    return keep_list
-
-def main():
-    intcoor = np.load(sys.argv[1])
-    thresholds = [float(l.strip()) for l in open(sys.argv[2]).readlines()]
-    ndist = int(sys.argv[3])
-
-    keep_list = filter_intcoor(intcoor, thresholds,ndist)
-    #np.save(sys.argv[4], keep_list)
-    print(len(keep_list)/ (len(intcoor)**2-len(intcoor)))
+    np.save(sys.argv[4], keep_list)
 
 if __name__ == "__main__":
     main()

@@ -19,9 +19,9 @@ get_thresholds.py mask_rmsd_sample.npy intcoor_sample.npy $ndist $cutoff $percen
 
 #average thresholds over several samples
 #test on each sample:
-filter_intcoor.py intcoor_sample.npy thresholds-${cutoff}A-$percent-aver.txt $ndist mask_intcoor-${cutoff}A-$percent-aver.npy
-filter_RMSD.py sample.npy mask_intcoor-${cutoff}A-$percent-aver.npy $cutoff mask_rmsd-${cutoff}A-$percent-aver.npy
-cluster_fullmatrix.py mask_rmsd-${cutoff}A-$percent-aver.npy clusters-${cutoff}A-$percent-aver > centers-${cutoff}A-$percent-aver
+filter_intcoor.py intcoor_sample.npy thresholds-${cutoff}A-$percent.txt $ndist mask_intcoor-${cutoff}A-$percent.npy
+filter_RMSD.py sample.npy mask_intcoor-${cutoff}A-$percent.npy $cutoff mask_rmsd-${cutoff}A-$percent.npy
+cluster_fullmatrix.py mask_rmsd-${cutoff}A-$percent.npy clusters-${cutoff}A-$percent > centers-${cutoff}A-$percent
 ############################################
 # apply on full set of conformers
 ############################################
@@ -31,7 +31,6 @@ cluster_fullmatrix.py mask_rmsd-${cutoff}A-$percent-aver.npy clusters-${cutoff}A
 get_internal_coordinate.py $coor intcoor.npy 7 7 7 
 
 filter_intcoor.py intcoor.npy thresholds-${cutoff}A-$percent.txt $ndist mask_intcoor-${cutoff}A-$percent.npy
-filter_intcoor.py intcoor_sample.npy ../thresholds-${cutoff}A-$percent-aver.txt $ndist mask_intcoor-${cutoff}A-$percent-aver.npy
 
 ############################################
 # filter by pairwise RMSDs the compatible fragments.

@@ -55,16 +55,6 @@ def multifit(array_atoms1, atoms2):
   RMSD = numpy.sqrt(abs(RMSD / L))
   return U, COM1-COM2, RMSD
 
-def fit_multi_npy(a, ref):
-    rotation, translation, RMSD = multifit(a, ref)
-    rot = np.transpose(rotation, axes=(0,2,1))
-    COM = a.sum(axis=1)/a.shape[1]
-    centered = a - COM[:,None,:]
-    rotated = np.einsum('...ij,...jk->...ik',centered,rot)
-    fitted = rotated + COM[:,None,:]
-    translated = fitted - translation[:,None,:]
-    return translated, RMSD
-
 n = coor.shape[0]
 new_keep = []
 
@@ -73,7 +63,7 @@ for i in range(n):
     ref = coor[i]
     keep = keep_list[ keep_list[:,0] == i][:,1]
     tofit = coor[keep]
-    fitted, rmsd = fit_multi_npy(tofit, ref)
+    _ , _ , rmsd = multifit(tofit, ref)
     new = [[i, j] for j in keep[rmsd < cutoff]]
     new_keep.extend(new)
 
