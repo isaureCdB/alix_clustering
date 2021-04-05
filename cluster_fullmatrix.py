@@ -41,8 +41,8 @@ while n_max > 0:
     x_max = np.where(N_comp == n_max)[0]
     i_rand = randrange(len(x_max))
     i_max = x_max[i_rand]
-    if len(x_max > 1):
-        print("%i frag with max neighbors", file=sys.stderr)
+    if len(x_max) > 1:
+        print("%i frag with %i neighbors"%(len(x_max), n_max), file=sys.stderr)
     #
     clust = np.where(comp[i_max])[0]
     centers.append(i_max)
