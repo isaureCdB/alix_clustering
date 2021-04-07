@@ -65,13 +65,13 @@ def fit_multi_npy(a, ref):
 coor = np.load(sys.argv[1])
 ncoor = coor.shape[0]
 
-pairwise_rmsd = np.zeros((ncoor, ncoor), dtype=float)
+pairwise_rmsd = np.zeros((ncoor, ncoor), dtype=bool)
 
 for i in range(ncoor):
     print(i)
     ref = coor[i]
     tofit = coor[i:]
     fitted, rmsd = fit_multi_npy(tofit, ref)
-    pairwise_rmsd[i,i:] = rmsd
+    pairwise_rmsd[i,i:] = rmsd < 1
 
 np.save(sys.argv[2], pairwise_rmsd)
