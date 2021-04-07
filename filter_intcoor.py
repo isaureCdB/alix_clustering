@@ -8,6 +8,7 @@ def filter_intcoor(intcoor, thresholds, ndist):
     # next coor are delta of angles
 
     nstruc, ncoor = intcoor.shape
+    npairs = 0.5*ncoor*(ncoor-1)
     assert nstruc < 2**16
     assert len(thresholds) == ncoor + 2
 
@@ -21,6 +22,7 @@ def filter_intcoor(intcoor, thresholds, ndist):
         diff = np.abs(intcoor[:,None, m]-intcoor[None, :, m])
         dist_sum += diff
         d = diff < thresholds[m]
+        print(d.sum()/npairs)
         diff = None # to free memory
         keep = keep & d
         d = None
@@ -38,6 +40,7 @@ def filter_intcoor(intcoor, thresholds, ndist):
         x = None
         ang_sum += diff
         d = diff  < thresholds[m]
+        print(d.sum()/npairs)
         diff = None
         keep = keep & d
         d = None
